@@ -11,7 +11,7 @@
  * Plugin Name: Wordpress Two Factor Authentication
  * Plugin URI:  https://github.com/officialrkay/wordpress-two-factor-authentication
  * Description: Wordpress Two Factor Authentication Plugin.
- * Version:     1.0.0-beta
+ * Version:     1.0.0
  * Author:      Rishabh Sharma
  * Author URI:  https://example.com
  * Text Domain: ski-wtfa
