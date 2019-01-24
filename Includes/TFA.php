@@ -23,15 +23,17 @@ class TFA
     public static function disable_user( $user_id = null )
     {
         $user_id = ! is_null( $user_id ) ? $user_id : get_current_user_id();
-        
+
         return \update_user_meta( $user_id, '_ski_wtfa_enabled', false );
     }
     public static function update_user_wtfa_key( $user_id, $tfa_key )
     {
         return \update_user_meta( $user_id, '_ski_wtfa_key', $tfa_key );
     }
-    public static function get_user_wtfa_key( $user_id )
+    public static function get_user_wtfa_key( $user_id = null )
     {
+        $user_id = ! is_null( $user_id ) ? $user_id : get_current_user_id();
+
         return \get_user_meta( $user_id, '_ski_wtfa_key', true );
     }
 }

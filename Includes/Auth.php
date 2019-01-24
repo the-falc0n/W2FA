@@ -65,11 +65,11 @@ class Auth
 
         if( ! isset( $_GET['ski_wtfa_nonce'] ) ) {
             $_nonce = wp_create_nonce( 'ski_user_authenticate' );
-            wp_redirect( add_query_arg( 'ski_wtfa_nonce', $_nonce, admin_url( 'admin.php' ) ) );
+            wp_redirect( add_query_arg( 'ski_wtfa_nonce', $_nonce, admin_url() ) );
         } else {
             if( ! wp_verify_nonce( $_GET['ski_wtfa_nonce'], 'ski_user_authenticate' ) ) {
                 $_nonce = wp_create_nonce( 'ski_user_authenticate' );
-                wp_redirect( add_query_arg( 'ski_wtfa_nonce', $_nonce, admin_url( 'admin.php' ) ) );
+                wp_redirect( add_query_arg( 'ski_wtfa_nonce', $_nonce, admin_url() ) );
             }
         }
 

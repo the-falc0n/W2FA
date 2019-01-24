@@ -36,9 +36,35 @@ class Ajax
             wp_die();
         }
 
-        echo json_encode([
-            'status' => true
-        ]);
+        $totp     = new TOTP();
+        $wtfa_key = TFA::get_user_wtfa_key();
+        $wtfa_pin = $_POST['pin'];
+        if( $totp->generate_token( $wtfa_key ) === $wtfa_pin ) {
+            $wtfa_key = apply_filters( 'ski_wtfa_before_login', $wtfa_key, $wtfa_pin );
+            if( \is_wp_error( $wtfa_key ) ) {
+                echo json_encode( [
+                    'status'  => false,
+                    'message' => 'Invalid Provided Key.'
+                ] );
+                wp_die();
+            }
+
+            $status = Session::delete( '_ski_user_authenticated' );
+            if( ! $status ) {
+                echo json_encode( [
+                    'status'  => false,
+                    'message' => 'Unable To LogIn.'
+                ] );
+                wp_die();
+            }
+
+            do_action( 'ski_wtfa_login', $status, $wtfa_key, $wtfa_pin );
+
+            echo json_encode( [
+                'status'  => true,
+                'message' => 'Login Successfull.'
+            ] );
+        }
         wp_die();
     }
     public static function ski_wtfa_setup()

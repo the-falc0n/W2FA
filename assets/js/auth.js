@@ -62,7 +62,7 @@
             },
             success: function( res ) {
                 if( res.status ) {
-
+                    window.location.href = admin_url;
                 } else {
                     $form_submit.text('Verify').prop( 'disabled', false );
                 }
