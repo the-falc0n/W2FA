@@ -2,6 +2,10 @@
 
 namespace SKI\WTFA;
 
+use SKI\WTFA\Helpers\Session;
+use SKI\WTFA\Helpers\TFA\TOTP;
+use SKI\WTFA\TFA;
+
 class Ajax
 {
     public static function init()
@@ -21,6 +25,17 @@ class Ajax
     }
     public static function ski_wtfa_verify_pin()
     {
+        if(
+            empty( $_POST['ski_wtfa_nonce'] )
+            || ! wp_verify_nonce( $_POST['ski_wtfa_nonce'], 'ski_user_authenticate' )
+        ) {
+            echo json_encode( [
+                'status'  => false,
+                'message' => 'Unauthorized Access.'
+            ] );
+            wp_die();
+        }
+
         echo json_encode([
             'status' => true
         ]);
@@ -28,9 +43,46 @@ class Ajax
     }
     public static function ski_wtfa_setup()
     {
-        echo json_encode([
-            'status' => true
-        ]);
+        if(
+            empty( $_POST['ski_wtfa_nonce'] )
+            || ! wp_verify_nonce( $_POST['ski_wtfa_nonce'], 'ski_wtfa_setup_nonce' )
+        ) {
+            echo json_encode( [
+                'status'  => false,
+                'message' => 'Unauthorized Access.'
+            ] );
+            wp_die();
+        }
+
+        $totp     = new TOTP();
+        $wtfa_key = Session::get( '_ski_wtfa_setup_secret' );
+        $wtfa_pin = $_POST['pin'];
+        if( $totp->generate_token( $wtfa_key ) === $wtfa_pin ) {
+            $wtfa_key = apply_filters( 'ski_wtfa_before_setup', $wtfa_key, $wtfa_pin );
+            if( \is_wp_error( $wtfa_key ) ) {
+                echo json_encode( [
+                    'status'  => false,
+                    'message' => 'Invalid Provided Key.'
+                ] );
+                wp_die();
+            }
+
+            $status = TFA::enable_user( \get_current_user_id(), $wtfa_key );
+            if( ! $status ) {
+                echo json_encode( [
+                    'status'  => false,
+                    'message' => 'Unable to Setup 2-factor Authentication.'
+                ] );
+                wp_die();
+            }
+
+            do_action( 'ski_wtfa_setup', $status, $wtfa_key, $wtfa_pin );
+
+            echo json_encode( [
+                'status'  => true,
+                'message' => 'Successfully Setup 2-factor Authentication.'
+            ] );
+        }
         wp_die();
     }
 }

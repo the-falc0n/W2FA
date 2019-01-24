@@ -72,7 +72,8 @@
     </style>
     <script type="text/javascript">
         var ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>',
-            ski_wtfa_nonce = '<?php echo $_GET['ski_wtfa_nonce'] ?>';
+            ski_wtfa_nonce = '<?php echo $_GET['ski_wtfa_setup'] ?>',
+            admin_url = '<?php echo admin_url(); ?>';
     </script>
     <?php do_action( 'admin_enqueue_scripts', 'ski-wtfa-setup' ); ?>
     <?php do_action( 'admin_print_styles' ); ?>

@@ -3,7 +3,7 @@
         <tr>
             <th>Two Factor Authentication</th>
             <td>
-                <?php if( $is_2fa_enabled ) : ?>
+                <?php if( $is_tfa_enabled ) : ?>
                     <a href="<?php echo $totp_disable_url; ?>"
                        class="button button-red"
                        onclick="return confirm( 'Are You Sure?' );">Disable 2FA</button>
