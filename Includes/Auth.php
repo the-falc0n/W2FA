@@ -49,19 +49,19 @@ class Auth
 
         if(
             $_SERVER['REQUEST_METHOD'] === 'POST'
-            && isset( $_POST['ski_wotp_nonce'] )
-            && wp_verify_nonce( $_POST['ski_wotp_nonce'], 'ski_user_authenticate' )
+            && isset( $_POST['ski_wtfa_nonce'] )
+            && wp_verify_nonce( $_POST['ski_wtfa_nonce'], 'ski_user_authenticate' )
         ) {
             return false;
         }
 
-        if( ! isset( $_GET['ski_wotp_nonce'] ) ) {
+        if( ! isset( $_GET['ski_wtfa_nonce'] ) ) {
             $_nonce = wp_create_nonce( 'ski_user_authenticate' );
-            wp_redirect( add_query_arg( 'ski_wotp_nonce', $_nonce, admin_url( 'admin.php' ) ) );
+            wp_redirect( add_query_arg( 'ski_wtfa_nonce', $_nonce, admin_url( 'admin.php' ) ) );
         } else {
-            if( ! wp_verify_nonce( $_GET['ski_wotp_nonce'], 'ski_user_authenticate' ) ) {
+            if( ! wp_verify_nonce( $_GET['ski_wtfa_nonce'], 'ski_user_authenticate' ) ) {
                 $_nonce = wp_create_nonce( 'ski_user_authenticate' );
-                wp_redirect( add_query_arg( 'ski_wotp_nonce', $_nonce, admin_url( 'admin.php' ) ) );
+                wp_redirect( add_query_arg( 'ski_wtfa_nonce', $_nonce, admin_url( 'admin.php' ) ) );
             }
         }
 
@@ -71,11 +71,23 @@ class Auth
     }
     public static function totp_setup()
     {
-        $totp = new TOTP();
+        if( ! isset( $_GET['ski_wtfa_setup'] ) ) {
+            return false;
+        }
+
+        $ski_wtfa_setup_nonce = $_GET['ski_wtfa_setup'];
+
+        if( ! wp_verify_nonce( $ski_wtfa_setup_nonce, 'ski_wtfa_setup_nonce' ) ) {
+            $_nonce = wp_create_nonce( 'ski_user_authenticate' );
+            wp_redirect( admin_url( 'admin.php' ) );
+        }
+
+        $totp   = new TOTP();
         $secret = $totp->generate_secret();
         $data = [
-            'totp_secret' => $secret,
-            'qr_code_url' => TOTP::qr_code_url( $secret, 'officialr.kay', 'Google' )
+            'totp_secret'          => $secret,
+            'totp_secret_formated' => implode( "-", str_split( $secret, 4 ) ),
+            'qr_code_url'          => TOTP::qr_code_url( $secret, 'officialr.kay', 'Google' )
         ];
 
         set_current_screen();

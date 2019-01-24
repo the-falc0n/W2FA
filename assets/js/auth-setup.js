@@ -1,6 +1,6 @@
 ( function( $ ) {
     $( '#pin-input-container' ).on( 'keydown keyup', 'input', function( event ) {
-        const form         = $( '#ski-wtfa-auth-form' );
+        const form         = $( '#ski-wtfa-setup-form' );
         const pic          = $( '#pin-input-container' );
         const is_keyup     = event.type == 'keyup' ? true : false;
         const is_backspace = ( event.which == 8 || event.which == 46 ) ? true : false;
@@ -34,12 +34,12 @@
         }
     } );
 
-    $( document ).on( 'submit', '#ski-wtfa-auth-form', function( event ) {
+    $( document ).on( 'submit', '#ski-wtfa-setup-form', function( event ) {
         event.preventDefault();
         var $form = $( this ),
             $form_submit = $form.find( 'button[type="submit"]' ),
             data = {
-                action: 'ski_wtfa_verify_pin',
+                action: 'ski_wtfa_setup',
                 ski_wtfa_nonce,
                 pin: ''
             };

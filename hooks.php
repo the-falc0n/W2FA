@@ -12,3 +12,6 @@ add_action( 'admin_enqueue_scripts', 'wfta_register_admin_scripts' );
 
 // Enqueue Admin Scripts
 add_action( 'admin_enqueue_scripts', 'wfta_enqueue_admin_scripts' );
+
+// Adding Totp Setup Field To User Profile
+add_action( 'show_user_profile', [ 'SKI\WTFA\Profile', 'totp_setup_field' ] );

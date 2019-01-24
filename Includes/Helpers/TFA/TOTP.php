@@ -50,7 +50,7 @@ class TOTP extends HOTP
         ];
         $oauth_url_query = http_build_query( $oauth_url_query_array );
         $qr_code_content = "otpauth://totp/{$label}?{$oauth_url_query}";
-        $qr_code_url     = "https://chart.googleapis.com/chart?cht=qr&chs=240x240&chl={$qr_code_content}&choe=UTF-8&chld=L|0";
+        $qr_code_url     = "https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={$qr_code_content}&choe=UTF-8&chld=L|0";
 
         return $qr_code_url;
     }

@@ -72,7 +72,7 @@
     </style>
     <script type="text/javascript">
         var ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>',
-            ski_wotp_nonce = '<?php echo $_GET['ski_wotp_nonce'] ?>';
+            ski_wtfa_nonce = '<?php echo $_GET['ski_wtfa_nonce'] ?>';
     </script>
     <?php do_action( 'admin_enqueue_scripts', 'ski-wtfa-auth' ); ?>
     <?php do_action( 'admin_print_styles' ); ?>
@@ -120,7 +120,7 @@
                 </div>
             </div>
             <div class="footer">
-                <a href="submit"
+                <a href="<?php echo wp_logout_url(); ?>"
                    class="button danger-link">Logout</a>
                 <button type="submit"
                         class="button primary"

@@ -72,7 +72,7 @@
     </style>
     <script type="text/javascript">
         var ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>',
-            ski_wotp_nonce = '<?php echo $_GET['ski_wotp_nonce'] ?>';
+            ski_wtfa_nonce = '<?php echo $_GET['ski_wtfa_nonce'] ?>';
     </script>
     <?php do_action( 'admin_enqueue_scripts', 'ski-wtfa-setup' ); ?>
     <?php do_action( 'admin_print_styles' ); ?>
@@ -94,7 +94,7 @@
                         <img src="<?php echo $qr_code_url; ?>">
                     </div>
                     <div id="qr-secret-container">
-                        <span><?php echo $totp_secret; ?></span>
+                        <span><?php echo $totp_secret_formated; ?></span>
                     </div>
                 </div>
                 <div id="pin-input-container">
@@ -128,7 +128,7 @@
                 </div>
             </div>
             <div class="footer">
-                <a href="submit"
+                <a href="<?php echo admin_url( 'profile.php' ); ?>"
                    class="button danger-link">Cancel</a>
                 <button type="submit"
                         class="button primary"

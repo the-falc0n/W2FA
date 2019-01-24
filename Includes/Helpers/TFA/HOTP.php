@@ -52,12 +52,12 @@ class HOTP
                       | ( $hmac_result[ $offset+3 ] & 0xff );
         return $code % pow( 10, $length );
     }
-    public static function generate_secret( $length = 16 )
+    public static function generate_secret( $bits_length = 80 )
     {
-        if ( $length % 8 != 0 ) {
+        if ( $bits_length < 8 || $bits_length % 8 !== 0 ) {
             throw new \Exception( "Length must be a multiple of 8" );
         }
-        $secret = openssl_random_pseudo_bytes( $length, $strong );
+        $secret = openssl_random_pseudo_bytes( $bits_length / 8, $strong );
         if ( ! $strong ) {
             throw new \Exception("Random string generation was not strong");
         }
