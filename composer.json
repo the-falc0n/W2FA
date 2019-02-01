@@ -3,5 +3,8 @@
         "psr-4": {
             "SKI\\WTFA\\": "\\Includes\\"
         }
+    },
+    "require": {
+        "defuse/php-encryption": "^2.2"
     }
 }

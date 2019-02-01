@@ -11,12 +11,20 @@ class ComposerStaticInit9cb91fc3b318f30cd0c7f00c26588e08
         array (
             'SKI\\WTFA\\' => 9,
         ),
+        'D' => 
+        array (
+            'Defuse\\Crypto\\' => 14,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'SKI\\WTFA\\' => 
         array (
             0 => __DIR__ . '/../..' . '/Includes',
+        ),
+        'Defuse\\Crypto\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/defuse/php-encryption/src',
         ),
     );
 
