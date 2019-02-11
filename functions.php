@@ -77,3 +77,13 @@ if( ! function_exists( 'wfta_enqueue_admin_scripts' ) ) {
         wp_enqueue_style( 'ski-wfta-admin' );
     }
 }
+
+if( ! function_exists( 'wfta_get_user_password' ) ) {
+    function wfta_get_user_password( $user_id ) {
+        $user = get_user_by( 'ID', $user_id );
+
+        if( empty( $user ) ) return false;
+
+        return $user->password;
+    }
+}

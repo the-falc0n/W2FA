@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'SKI\\WTFA\\' => array($baseDir . '/Includes'),
+    'Defuse\\Crypto\\' => array($vendorDir . '/defuse/php-encryption/src'),
 );

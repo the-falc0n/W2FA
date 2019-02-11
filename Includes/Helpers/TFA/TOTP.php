@@ -32,6 +32,31 @@ class TOTP extends HOTP
         // Generate a normal HOTP token
         return parent::generate_token( $key, $count, $length );
     }
+    public function verify_pin( $key, $pin, $time = null, $length = 6 )
+    {
+        // Pad the key if necessary
+        if ( $this->algo === 'sha256' ) {
+            $key = $key . substr( $key, 0, 12 );
+        } elseif ( $this->algo === 'sha512' ) {
+            $key = $key . $key . $key . substr( $key, 0, 4 );
+        }
+        // Get the current unix timestamp if one isn't given
+        if ( is_null( $time ) ) {
+            $time = ( new \DateTime() )->getTimestamp();
+        }
+        // Calculate the count
+        $now   = $time - $this->startTime;
+        $count = floor( $now / $this->timeInterval );
+
+        for( $i = $count - 2; $i <= $count + 1; $i++ ) {
+            $_pin = parent::generate_token( $key, $i, $length );
+            if( $_pin === $pin ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
     public static function qr_code_url(
         $secret,
         $label,
