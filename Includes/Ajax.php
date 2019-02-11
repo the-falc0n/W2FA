@@ -36,8 +36,19 @@ class Ajax
             wp_die();
         }
 
+        $totp     = new TOTP();
+        $wtfa_key = TFA::get_user_wtfa_key( get_current_user_id() );
+        $wtfa_pin = $_POST['pin'];
+        $status   = false;
+        if( $totp->verify_pin( $wtfa_key, $wtfa_pin ) ) {
+            $status = true;
+
+            Session::delete( '_ski_user_authenticated' );
+        }
+
         echo json_encode([
-            'status' => true
+            'status'   => $status,
+            'redirect' => admin_url('/')
         ]);
         wp_die();
     }

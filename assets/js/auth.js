@@ -62,7 +62,9 @@
             },
             success: function( res ) {
                 if( res.status ) {
+                    window.location.href = res.redirect;
 
+                    $form_submit.text('Validated');
                 } else {
                     $form_submit.text('Verify').prop( 'disabled', false );
                 }

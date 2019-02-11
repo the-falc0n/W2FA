@@ -6,10 +6,10 @@ use Defuse\Crypto\KeyProtectedByPassword as KPBP;
 
 class Key
 {
-    public static function unlock( $password )
+    public static function unlock( $encryption_key, $password )
     {
         try {
-            return self::generate( $password )->unlockKey( $password );
+            return KPBP::loadFromAsciiSafeString( $encryption_key )->unlockKey( $password );
         } catch ( Defuse\Crypto\Exception $e ) {
             return false;
         }
@@ -17,7 +17,7 @@ class Key
     public static function generate( $password )
     {
         try {
-            return KPBP::createRandomPasswordProtectedKey( $password );
+            return KPBP::createRandomPasswordProtectedKey( $password )->saveToAsciiSafeString();
         } catch ( Defuse\Crypto\Exception $e ) {
             return false;
         }
