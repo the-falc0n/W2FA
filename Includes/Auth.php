@@ -12,6 +12,8 @@ class Auth
     private static $tfa_key        = false;
     public static function init()
     {
+        if( ! wtfa_get_deep_option('ski_wtfa_settings__general.enabled') ) return false;
+
         \add_filter(
             'wp_authenticate_user',
             [ __CLASS__, 'check_tfa_enabled' ],

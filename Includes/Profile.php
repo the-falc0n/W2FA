@@ -10,6 +10,8 @@ class Profile
 {
     public static function totp_setup_field( $user )
     {
+        if( ! wtfa_get_deep_option('ski_wtfa_settings__general.enabled') ) return false;
+
         $is_tfa_enabled = TFA::user_enabled( $user->ID );
 
         $args = [

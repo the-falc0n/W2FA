@@ -49,18 +49,17 @@ class TFA
     }
     public static function disable_user( $user_id = null )
     {
+        global $wpdb;
+        $table = self::table();
+
         $user_id = ! is_null( $user_id ) ? $user_id : get_current_user_id();
 
-<<<<<<< HEAD
-        return \update_user_meta( $user_id, '_ski_wtfa_enabled', false );
-=======
         $sql = "UPDATE {$table}
                 SET    enabled = 0
                 WHERE  user_id = {$user_id}
                        AND enabled = 1";
 
         return $wpdb->query( $sql );
->>>>>>> feature/wtfa-key-encryption-decryption
     }
     public static function update_user_wtfa_key( $user_id, $tfa_key )
     {
@@ -97,11 +96,6 @@ class TFA
     }
     public static function get_user_wtfa_key( $user_id = null )
     {
-<<<<<<< HEAD
-        $user_id = ! is_null( $user_id ) ? $user_id : get_current_user_id();
-
-        return \get_user_meta( $user_id, '_ski_wtfa_key', true );
-=======
         global $wpdb;
         $table = self::table();
 
@@ -115,6 +109,5 @@ class TFA
         $tfa_key = Crypto::decrypt( $row->tfa_key, Key::unlock( $row->encryption_key, $row->password ) );
 
         return $tfa_key;
->>>>>>> feature/wtfa-key-encryption-decryption
     }
 }
